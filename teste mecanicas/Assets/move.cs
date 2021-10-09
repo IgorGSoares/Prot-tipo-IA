@@ -11,7 +11,9 @@ public class move : MonoBehaviour
     public bool findF = false;
     public GameObject vision;
     public GameObject alvo;
-    public GameObject[] array;
+    public List<GameObject> list = new List<GameObject>();
+    public float currentDist = 5000.0f;
+    public int currentIndex = 0;
     void Start()
     {
         //choose = Random.Range(0, 4);
@@ -50,7 +52,16 @@ public class move : MonoBehaviour
         }
         else if(findF == true)
         {
-            transform.position = Vector3.MoveTowards(transform.position, alvo.transform.position, speed * Time.deltaTime);
+            for (int i = 0; i < list.Count; i++)
+            {
+                float d = Vector2.Distance(list[i].transform.position, this.transform.position);
+                if(d < currentDist)
+                {
+                    currentDist = d;
+                    currentIndex = i;
+                }
+            }
+            transform.position = Vector3.MoveTowards(transform.position, list[currentIndex].transform.position, speed * Time.deltaTime);
         }
     }
 
@@ -63,18 +74,23 @@ public class move : MonoBehaviour
 
     public void GetRoute(GameObject obj)
     {
-        alvo = obj;
-        findF = true;
+        //alvo = obj;
+        if(FindInList(obj) == false)
+        {
+            list.Add(obj);
+            findF = true;
+        }
+
     }
 
-    bool FindinArray(GameObject obj)
+    bool FindInList(GameObject obj)
     {
         bool r = false;
-        if(array.Length > 0)
+        if(list.Count > 0)
         {
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < list.Count; i++)
             {
-                if(array[i] == obj)
+                if(list[i] == obj)
                 {
                     r = true;
                     break;
@@ -90,11 +106,14 @@ public class move : MonoBehaviour
         if (collision.gameObject.tag == "Finish")
         {
             Destroy(collision.collider.gameObject);
-            alvo = null;
-            findF = false;
-            choose = Random.Range(0, 4);
-            ativo = true;
-            StartCoroutine(Reset());
+            list.RemoveAt(currentIndex);
+            if(list.Count == 0)
+            {
+                findF = false;
+                choose = Random.Range(0, 4);
+                ativo = true;
+                StartCoroutine(Reset());
+            }
         }
     }
 }
