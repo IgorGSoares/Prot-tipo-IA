@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\childcollider.cs" />
+    <Compile Include="Assets\TesteCreate.cs" />
     <Compile Include="Assets\AutoMove.cs" />
     <Compile Include="Assets\move.cs" />
   </ItemGroup>

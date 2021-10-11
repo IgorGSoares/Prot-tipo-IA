@@ -18,10 +18,19 @@ public class childcollider : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Finish")
+        if(collision.gameObject.name == "Orb")
         {
             //this.collider2D.attachedRigidbody.SendMessage("OnCollisionEnter2D", collision);
             this.transform.parent.GetComponent<move>().GetRoute(collision.gameObject);
+        }
+        else if (collision.gameObject.tag == "Bot")
+        {
+            //this.collider2D.attachedRigidbody.SendMessage("OnCollisionEnter2D", collision);
+            if(this.transform.parent.transform.position != collision.gameObject.transform.position)
+            {
+                this.transform.parent.GetComponent<move>().Flee(collision.gameObject);
+                Debug.Log(collision.gameObject.name);
+            }
         }
     }
 }

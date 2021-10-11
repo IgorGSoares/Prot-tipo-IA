@@ -341,6 +341,7 @@
 "Assets/AutoMove.cs"
 "Assets/childcollider.cs"
 "Assets/move.cs"
+"Assets/TesteCreate.cs"
 -langversion:8.0
 
 /deterministic
